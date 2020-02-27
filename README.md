@@ -20,6 +20,7 @@ https://www.sparkfun.com/products/14478
 https://github.com/sparkfun/MaKeyMaKey
 
 https://www.instructables.com/community/How-does-Makey-Makey-sense-touch/
+https://www.instructables.com/id/DIY-Makey-Makey-With-Arduino-Leonardo/
 
 https://www.youtube.com/watch?v=gTU9NunYVnM
 
@@ -37,3 +38,10 @@ https://makeymakey.com/blogs/how-to-instructions/apps-for-plug-and-play
 https://www.instructables.com/id/Makey-Makey-2/
 
 https://makeymakey.com/blogs/how-to-instructions/getting-started-with-scratch
+
+## My req
+
+- min 6 buttons - 4 arrows, space, click
+- pot to change sensitivity
+- on/off for keyboard to disable keyboard / change mode ? (off / mouse/arrows/wsad)
+- led to indicate button pressed - or just rely on TX/RX diodes...
