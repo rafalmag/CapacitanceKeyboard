@@ -23,7 +23,7 @@ int enablePin = 5;
 
 void setup()
 {
-  pinMode(enablePin, INPUT);
+  pinMode(enablePin, INPUT_PULLUP);
   if (digitalRead(enablePin) == HIGH)
   {
     Serial.begin(115200);
@@ -47,12 +47,12 @@ void setup()
     Serial.begin(9600);
     Serial.println("Keyboard init skipped.");
 
-    pinMode(7, INPUT);
-    pinMode(16, INPUT);
-    pinMode(14, INPUT);
-    pinMode(15, INPUT);
+    pinMode(7, INPUT_PULLUP);
+    pinMode(16, INPUT_PULLUP);
+    pinMode(14, INPUT_PULLUP);
+    pinMode(15, INPUT_PULLUP);
 
-    pinMode(10, INPUT);
+    pinMode(10, INPUT_PULLUP);
   }
 }
 
