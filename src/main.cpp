@@ -1,13 +1,26 @@
 #include <Keyboard.h>
 #include <movingAvg.h>
 
+// A10 to adj treshold
 // Original values were 200 and then 600
-const int PressedMaxThreshold = 500;
-const int ReleasedMinThreshold = 900;
+// const int PressedMaxThreshold = 500;
+// const int ReleasedMinThreshold = 900;
+const int ThresholdDiff = 150;
 
 const byte PinCount = 8;
-const byte InputPins[PinCount] = {A6, A7, A8, A9, A3, A2, A1, A0};
-const char KeyCodes[PinCount] = {'i', 'o', 'p', 'z', 'x', 'c', 'v', 'b'};
+
+const byte InputPins[PinCount] = {A8, A9, A6, A7,
+                                  A1, A0, A2, A3};
+
+const char KeyCodes[PinCount] = {'z', 'x', 'c', 'v',
+                                 'b', 'n', 'm', ','};
+
+// control pins
+// 7,16,14,15
+#define ENABLE_PIN 15
+
+#define LED_YELLOW 5
+#define LED_GREEN 3
 
 struct TouchInput
 {
@@ -19,57 +32,58 @@ struct TouchInput
 
 TouchInput Pins[PinCount];
 
-int enablePin = 5;
-
 void setup()
 {
-  pinMode(enablePin, INPUT_PULLUP);
-  if (digitalRead(enablePin) == HIGH)
+  pinMode(LED_YELLOW, OUTPUT);
+  digitalWrite(LED_YELLOW, LOW);
+  pinMode(LED_GREEN, OUTPUT);
+  digitalWrite(LED_GREEN, LOW);
+
+  pinMode(ENABLE_PIN, INPUT_PULLUP);
+  Serial.begin(115200);
+  // Keyboard.begin();
+
+  for (int i = 0; i < PinCount; i++)
   {
-    Serial.begin(115200);
-    // Keyboard.begin();
+    int pin = InputPins[i];
 
-    for (int i = 0; i < PinCount; i++)
-    {
-      int pin = InputPins[i];
+    // Set up input pins, external 22M ohm pull-ups
+    pinMode(pin, INPUT);
 
-      // Set up input pins
-      // de-activate the internal pull-ups, since we're using external resistors
-      pinMode(pin, INPUT);
-
-      Pins[i].analogPin = pin;
-      Pins[i].keycode = KeyCodes[i];
-      Pins[i].filter.begin();
-    }
+    Pins[i].analogPin = pin;
+    Pins[i].keycode = KeyCodes[i];
+    Pins[i].filter.begin();
   }
-  else
-  {
-    Serial.begin(9600);
-    Serial.println("Keyboard init skipped.");
 
-    pinMode(7, INPUT_PULLUP);
-    pinMode(16, INPUT_PULLUP);
-    pinMode(14, INPUT_PULLUP);
-    pinMode(15, INPUT_PULLUP);
+  pinMode(7, INPUT_PULLUP);
+  pinMode(16, INPUT_PULLUP);
+  pinMode(14, INPUT_PULLUP);
+  pinMode(15, INPUT_PULLUP);
 
-    pinMode(10, INPUT_PULLUP);
-  }
+  pinMode(10, INPUT);
 }
 
 void loop()
 {
-  if (digitalRead(enablePin) == HIGH)
+  if (digitalRead(ENABLE_PIN) == HIGH)
   {
+    digitalWrite(LED_YELLOW, LOW);
+    boolean anyPressed = false;
     for (int i = 0; i < PinCount; i++)
     {
       float currentAverage = Pins[i].filter.reading(analogRead(Pins[i].analogPin));
       boolean previousState = Pins[i].wasPressed;
       boolean currentState = previousState; // Default if in the dead zone
 
-      if (currentAverage < PressedMaxThreshold)
+      int threshold = analogRead(10);
+      int pressedMaxThreshold = max(threshold - ThresholdDiff, 1);
+      int releasedMinThreshold = min(threshold + ThresholdDiff, 1023);
+      if (currentAverage < pressedMaxThreshold)
         currentState = true; // Pressed
-      else if (currentAverage > ReleasedMinThreshold)
+      else if (currentAverage > releasedMinThreshold)
         currentState = false; // Released
+
+      anyPressed |= currentState;
 
       if (currentState != previousState)
       {
@@ -80,9 +94,12 @@ void loop()
       }
       Pins[i].wasPressed = currentState;
     }
+    digitalWrite(LED_GREEN, anyPressed);
   }
   else
   {
+    digitalWrite(LED_YELLOW, HIGH);
+    digitalWrite(LED_GREEN, LOW);
     //inputs test
     Serial.println("Keyboard init skipped.");
 
@@ -95,9 +112,6 @@ void loop()
     Serial.print("14: ");
     Serial.println(digitalRead(14));
 
-    Serial.print("15: ");
-    Serial.println(digitalRead(15));
-    
     Serial.print("10: ");
     Serial.println(analogRead(10));
 

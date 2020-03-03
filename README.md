@@ -24,6 +24,10 @@ https://www.instructables.com/id/DIY-Makey-Makey-With-Arduino-Leonardo/
 
 https://www.youtube.com/watch?v=gTU9NunYVnM
 
+
+https://core-electronics.com.au/tutorials/capacitive-touch-with-makey-makey.html
+
+
 ## Arduino Pro Micro (32u4) pinout
 
 ![Arduino Pro Micro](arduino_pro_micro.jpg)
