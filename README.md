@@ -42,6 +42,7 @@ https://makeymakey.com/blogs/how-to-instructions/apps-for-plug-and-play
 https://www.instructables.com/id/Makey-Makey-2/
 
 https://makeymakey.com/blogs/how-to-instructions/getting-started-with-scratch
+https://makeymakey.com/blogs/how-to-instructions/apps-for-plug-and-play
 
 ## My req
 

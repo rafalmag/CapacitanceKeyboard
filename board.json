@@ -1,0 +1,14 @@
+{
+    "parameterSets": {
+        "design default values": {
+            "mountHoleOffset": "2",
+            "mountHolesDia": "2.35",
+            "thickness": "1.6",
+            "x": "60",
+            "xMargin": "3.3",
+            "y": "80",
+            "yMargin": "6.9"
+        }
+    },
+    "fileFormatVersion": "1"
+}

@@ -5,7 +5,7 @@
 // Original values were 200 and then 600
 // const int PressedMaxThreshold = 500;
 // const int ReleasedMinThreshold = 900;
-const int ThresholdDiff = 150;
+const int ThresholdDiff = 90;
 
 const byte PinCount = 8;
 
